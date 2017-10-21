@@ -18,7 +18,7 @@ def enable_ip(address):
 	wite_list = open(file, 'r')
 	for ip in wite_list:
 		if (address in ip):
-			print "the %s alredy in wite list" % address
+			print "the %s alredy in white list" % address
 			mbr = 1
 			break
 			
@@ -28,14 +28,14 @@ def enable_ip(address):
 		os.system("iptables -A INPUT -s"+ address +" -p tcp --destination-port 5060 -j ACCEPT") 
 		os.system("echo "+ address +" >> wite_list.ip")
 		os.system("iptables -A INPUT -p tcp --destination-port 5060 -j DROP")
-		return True
+		print "SUCCESS"
 
 
 
 def disable_ip(address):
 	ip = os.popen("more "+file+" |grep -o "+address+"", 'r').read()
 	if (address not in ip):
-		print "the %s  in not in wite list" % address
+		print "the %s  in not in white list" % address
 	else:
 		os.system("iptables -D INPUT -s "+address+" -p tcp --destination-port 5060 -j ACCEPT")
 		ins = open(file).read()
@@ -44,14 +44,14 @@ def disable_ip(address):
 		ins = ins.replace(address, "")
 		out.write(ins)
 		out.close()		
-		
+		print "SUCCESS"
 		#os.system("sed 's/%s/0/g' %s") % (address, file)
 
 def list_allowing_ip():
 
 	wite_list = open(file, 'r')
 	for line in wite_list:
-		print line
+		print  line
 	wite_list.close()
 
 
@@ -72,18 +72,18 @@ def is_valid_ipv4_address(address):
 def main():
 	if (len(argv) == 1):
 		print"|*****************************************************************************|"
-		print"| use sudo ./script xxx.xxx.xxx.xxx  enable   [to enable ip address]          |"
-		print"| use sudo ./script XXX.XXX.XXX.XXX  disable  [to remove ip from wite list]   |"
-		print"| use sudo ./script list                      [to print list of wite list ip] |"
-		print"| use sudo ./script free                      [to free the system]            |"
+		print"| use  xxx.xxx.xxx.xxx  enable            [to enable ip address]              |"
+		print"| use  XXX.XXX.XXX.XXX  disable           [to remove ip from white list]       |"
+		print"| use  list                               [to print list of white list ip]     |"
+		print"| use  free                               [to free the system]                |"
 		print"|                                                                             |"
 		print"|*****************************************************************************|"
 	elif(argv[1].upper() == "HELP"):
 		print"|*****************************************************************************|"
-		print"| use sudo ./script xxx.xxx.xxx.xxx  enable   [to enable ip address]          |"
-		print"| use sudo ./script XXX.XXX.XXX.XXX  disable  [to remove ip from wite list]   |"
-		print"| use sudo ./script list                      [to print list of wite list ip] |"
-		print"| use sudo ./script free                      [to free the system]            |"
+		print"| use  xxx.xxx.xxx.xxx  enable            [to enable ip address]              |"
+		print"| use  XXX.XXX.XXX.XXX  disable           [to remove ip from white list]       |"
+		print"| use  list                               [to print list of white list ip]     |"
+		print"| use  free                               [to free the system]                |"
 		print"|                                                                             |"
 		print"|*****************************************************************************|"
 
@@ -91,6 +91,7 @@ def main():
 		list_allowing_ip()
 	elif(argv[1].upper() == "FREE"):
 		Free_system()
+		print "SUCCESS"
 	elif(is_valid_ipv4_address(argv[1])):
 		if(argv[2].upper() == "ENABLE"):
 			enable_ip(argv[1])

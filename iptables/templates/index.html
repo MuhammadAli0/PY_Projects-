@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>IP TABLES CONTROAL UNIT</title>
+  
+  
+  
+      <link rel="stylesheet" href="static/css/style.css">
+
+  
+</head>
+
+<body>
+  <div class="vid-container">
+  <video id="Video1" class="bgvid back" autoplay="false" muted="muted" preload="auto" loop>
+      <source src="http://shortcodelic1.manuelmasiacsasi.netdna-cdn.com/themes/geode/wp-content/uploads/2014/04/milky-way-river-1280hd.mp4.mp4" type="video/mp4">
+  </video>
+  <div class="inner-container">
+    <video id="Video2" class="bgvid inner" autoplay="false" muted="muted" preload="auto" loop>
+      <source src="http://shortcodelic1.manuelmasiacsasi.netdna-cdn.com/themes/geode/wp-content/uploads/2014/04/milky-way-river-1280hd.mp4.mp4" type="video/mp4">
+    </video>
+    <div class="box">
+
+{% extends "base.html" %}
+{% block body %}
+    {% if 'username' in session %}
+        <p >Welcome back {{session['username']}}!</p>
+	<li><a id="remoteControl" href="{{url_for('remote')}}">remote control</a></li>
+	<li><a href="{{url_for('change')}}">change password</a></li>
+        <form action="{{url_for('index')}}" method="post">
+            <input type="submit" name="logout" value="logout" />
+        </form>
+    {% else %}
+
+      <h1>Login</h1>
+        <form action="{{url_for('index')}}" method="post">
+
+
+            <input type="text" name="username" placeholder="UserName" /></p>
+
+            <input type="password" name="passwd" placeholder="PassWord" /></p>
+            <p> <input type="submit" value="submit" /></p>
+
+    {% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endwith %}
+{% endblock %}
+    </div>
+  </div>
+</div>
+
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>
