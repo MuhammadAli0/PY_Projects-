@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="head">
+  <h1>CONTROL UNIT</h1>
+</div>
+  <div class="remote">
+ <form action="{{url_for('remote')}}" method="post">
+        <table>
+	   <tbody>
+	<tr>
+		<th><input type="submit" value="Print WhiteList" /></th>
+		<th><input type="text" name="enable" placeholder="IP_ADDRESS"/></th>
+		<th><input type="submit" value="Add To WhiteList" /></th>
+        	<th><input type="text" name="disable" placeholder="IP_ADDRESS"/></th>
+        	<th><input type="submit" value="Remove From WhiteList" /></th>
+	</tr>
+    </form>
+
+
+
+
+
+
+
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            Results:
+            <div>
+                {% for message in messages %}
+		<table class="msgtable"><th class="msgform">{{ message }}</th></table>
+                {% endfor %}
+            </div></div><div class="shoulder">
+        {% endif %}
+    {% endwith %}
+{% endblock %}
+{% block nav %}
+<li><a href="{{url_for('index')}}">BACK</a></li>
+
+
+{% endblock %}
+
+
