@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import flask, flask.views
 from os import *
 import functools
@@ -107,19 +107,56 @@ class Remote(flask.views.MethodView):
 		flask.flash(result)
 		return flask.redirect(flask.url_for('remote'))
 
+class block(flask.views.MethodView):
+    @login_required
+    def get(self):
+        return flask.render_template('block.html')
+        
+    @login_required
+    def post(self):
+	if is_valid_ipv4_address(flask.request.form['enable']):
+		data = flask.request.form['enable']
+		vdata = "popen('./script2.py  "	
+		vdata = vdata + data
+		vdata = vdata + " block', 'r').read()"
+		result = eval(vdata)        
+		flask.flash(result)
+		return flask.redirect(flask.url_for('block'))
+	elif is_valid_ipv4_address(flask.request.form['disable']):
+		data = flask.request.form['disable']
+		vdata = "popen('./script2.py  "	
+		vdata = vdata + data
+		vdata = vdata + " unblock', 'r').read()"
+		result = eval(vdata)        
+		flask.flash(result)
+		return flask.redirect(flask.url_for('block'))
+	else:
+		vdata = "popen('./script2.py  list', 'r').read()"
+		result = eval(vdata)
+		flask.flash(result)
+		return flask.redirect(flask.url_for('block'))
+
 	
-    
+
+app.add_url_rule('/block/',
+                 view_func=block.as_view('block'),
+                 methods=['GET', 'POST'])    
+
 app.add_url_rule('/',
                  view_func=Main.as_view('index'),
                  methods=["GET", "POST"])
+
 
 app.add_url_rule('/remote/',
                  view_func=Remote.as_view('remote'),
                  methods=['GET', 'POST'])
 
+
+
 app.add_url_rule('/change/',
                  view_func=change.as_view('change'),
                  methods=['GET', 'POST'])
+
 
 
 

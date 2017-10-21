@@ -2,18 +2,18 @@
 {% block body %}
 
 <div class="head">
-  <h1>CONTROL UNIT</h1>
+  <h1>Blocking UNIT</h1>
 </div>
   <div class="remote">
- <form action="{{url_for('remote')}}" method="post">
+ <form action="{{url_for('block')}}" method="post">
         <table>
 	   <tbody>
 	<tr>
-		<th><input type="submit" value="Print WhiteList" /></th>
+		<th><input type="submit" value="Print BlackList" /></th>
 		<th><input type="text" name="enable" placeholder="IP_ADDRESS"/></th>
-		<th><input type="submit" value="Add To WhiteList" /></th>
+		<th><input type="submit" value="Add To BlackList" /></th>
         	<th><input type="text" name="disable" placeholder="IP_ADDRESS"/></th>
-        	<th><input type="submit" value="Remove From WhiteList" /></th>
+        	<th><input type="submit" value="Remove From BlackList" /></th>
 	</tr>
     </form>
 
@@ -36,10 +36,11 @@
     {% endwith %}
 {% endblock %}
 {% block nav %}
-<li><a href="{{url_for('block')}}">BlackList Unit</a></li>
+
+<li><a href="{{url_for('remote')}}">WhiteList Unit</a></li>
 <li><a href="{{url_for('index')}}">MAIN</a></li>
 
 
 {% endblock %}
 
-
+	
