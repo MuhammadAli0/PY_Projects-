@@ -1,9 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 import flask, flask.views
 from os import *
 import functools
 import base64
 import socket
+from sys import argv
 
 app = flask.Flask(__name__)
 app.secret_key = "232431250303"
@@ -161,4 +162,4 @@ app.add_url_rule('/change/',
 
 
 
-app.run(host='localhost', port=int(8080), debug=True)
+app.run(host=argv[1], port=int(80), debug=True)
