@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>IP TABLES CONTROAL UNIT</title>
+  
+  
+  
+      <link rel="stylesheet" href="static/css/style.css">
+
+  
+</head>
+
+<body>
+
+    <div class="box">
+
+{% extends "base.html" %}
+{% block body %}
+    {% if 'username' in session %}
+        <p >Welcome back {{session['username']}}!</p>
+
+        	<center><li><a id="remoteControl" href="{{url_for('ssh')}}">Allow Incoming SSH Connections</a></li></center>
+	<center><li><a href="{{url_for('change')}}">change password</a></li></center>
+        <form action="{{url_for('index')}}" method="post">
+
+            <input type="submit" name="logout" value="logout" />
+        </form>
+    {% else %}
+
+      <h1>Login</h1>
+        <form action="{{url_for('index')}}" method="post">
+
+
+            <input type="text" name="username" placeholder="UserName" /></p>
+
+            <input type="password" name="passwd" placeholder="PassWord" /></p>
+            <p> <input type="submit" value="submit" /></p>
+
+    {% endif %}
+
+    </div>
+  </div>
+               <div class="alert">
+
+        {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endwith %}
+               </div>
+</div>
+
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>
+{% endblock %}

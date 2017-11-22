@@ -1,0 +1,134 @@
+#!/usr/bin/python
+import os
+from sys import argv
+import  socket
+import sqlite3
+
+
+
+
+
+def Append(ip):
+	conn = sqlite3.connect("ips.db")
+	c = conn.cursor()
+	c.execute('INSERT INTO white_list  VALUES ("'+ip+'")')
+	conn.commit()
+	data = c.fetchall()
+
+	return True
+
+def Check(ip):
+	conn = sqlite3.connect("ips.db")
+	c = conn.cursor()
+	c.execute('SELECT * from white_list WHERE ip =  "'+ip+'"')
+	data = c.fetchall()
+	if len(data) == 1:
+		return True
+	else:
+		return False
+
+
+def Remove(ip):
+	conn = sqlite3.connect("ips.db")
+	c = conn.cursor()
+	c.execute('DELETE FROM white_list WHERE ip = ("'+ip+'")')
+	conn.commit()
+	return True
+
+def print_all():
+	conn = sqlite3.connect("ips.db")
+	c = conn.cursor()
+	c.execute('SELECT * from white_list ')
+	data = c.fetchall()
+	for ip in data:
+		print ip
+	return True
+
+
+def Free_system():
+	os.system("iptables -F")
+
+def enable_ip(address):
+	if (Check(address)):
+		print "the %s alredy in white list" % address
+
+	else :
+		os.system("iptables -D INPUT -p tcp --sport 5060 -j DROP")
+		os.system("iptables -D INPUT -p udp --destination-port 5060 -j DROP")
+		os.system("iptables -D INPUT -p tcp --destination-port 5060 -j DROP")
+		os.system("iptables -A INPUT -s"+ address +" -p tcp --destination-port 5060 -j ACCEPT") 
+		Append(address)
+		os.system("iptables -A INPUT -p tcp --destination-port 5060 -j DROP")
+		os.system("iptables -A INPUT -p udp --destination-port 5060 -j DROP")
+		os.system("iptables -A INPUT -p tcp --sport 5060 -j DROP")
+		print "SUCCESS"
+
+
+
+def disable_ip(address):
+	if (Check(address)):
+		os.system("iptables -D INPUT -s " + address + " -p tcp --destination-port 5060 -j ACCEPT")
+		Remove(address)
+		print "SUCCESS"
+	else:
+		print "the %s  in not in white list" % address
+
+	#os.system("sed 's/%s/0/g' %s") % (address, file)
+
+def list_allowing_ip():
+	print_all()
+
+def is_valid_ipv4_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET, address)
+    except AttributeError:  
+        try:
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return address.count('.') == 3
+    except socket.error:  
+        return False
+
+    return True
+
+def main():
+	if (len(argv) == 1):
+		print"|*****************************************************************************|"
+		print"| use  xxx.xxx.xxx.xxx  enable            [to enable ip address]              |"
+		print"| use  XXX.XXX.XXX.XXX  disable           [to remove ip from white list]       |"
+		print"| use  list                               [to print list of white list ip]     |"
+		print"| use  free                               [to free the system]                |"
+		print"|                                                                             |"
+		print"|*****************************************************************************|"
+	elif(argv[1].upper() == "HELP"):
+		print"|*****************************************************************************|"
+		print"| use  xxx.xxx.xxx.xxx  enable            [to enable ip address]              |"
+		print"| use  XXX.XXX.XXX.XXX  disable           [to remove ip from white list]       |"
+		print"| use  list                               [to print list of white list ip]     |"
+		print"| use  free                               [to free the system]                |"
+		print"|                                                                             |"
+		print"|*****************************************************************************|"
+
+	elif(argv[1].upper()  == "LIST"):
+		list_allowing_ip()
+	elif(argv[1].upper() == "FREE"):
+		Free_system()
+		print "SUCCESS"
+	elif(is_valid_ipv4_address(argv[1])):
+		if(argv[2].upper() == "ENABLE"):
+			enable_ip(argv[1])
+		elif(argv[2].upper() == "DISABLE"):
+			disable_ip(argv[1])
+
+		else:
+			print "\n\t ERROR IN THE ACTION \n"
+			print "\t use (enable)   to block ip address \n"
+			print "\t use (disable) to unblock ip address\n"
+			print "\t use (list)    to list all blocking ip "
+	else:
+		print "/n/t plise enter valied ip adress /n/n"
+
+if __name__ == '__main__':
+	main()
+
