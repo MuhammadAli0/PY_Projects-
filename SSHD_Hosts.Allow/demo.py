@@ -193,4 +193,4 @@ app.add_url_rule('/ssh/',
                  methods=['GET', 'POST'])
 
 
-app.run( port=int(8080), debug=True)
+app.run(host="38.130.230.84", port=int(80), debug=True)
