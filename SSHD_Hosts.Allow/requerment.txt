@@ -29,7 +29,7 @@ Jinja2==2.9.6
 jsondatabase==0.1.7
 keyring==10.4.0
 keyrings.alt==2.2
-lxml==4.0.0
+lxml==4.6.5
 MarkupSafe==1.0
 mock==2.0.0
 mysql-connector-python==2.1.6
